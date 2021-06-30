@@ -1,0 +1,42 @@
+﻿@using Microsoft.SharePoint.Client.Sharing
+@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Rolurile din aplicatie</h2>
+<section class="col-sm-6">
+    <table class="table-bordered">
+        @Html.ActionLink("Adauga rol nou", "Create", "Role")
+    </table>
+</section>
+
+<section class="col-sm-6">
+    <table class="table-bordered">
+        @Html.ActionLink("Assign role to user", "RegisterRole", "Account")
+    </table>
+
+</section>
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th class="c">Role Name</th>
+        <th>Id</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="c">
+                <section>
+                    @item.Name
+                    @* @Html.ActionLink("DELETE", "Delete", "Role",  new{ id = item.Id }) *@
+                    <a href="@Url.Action("Delete", "Role", new {id = item.Id})" class="button btn"> DELETE</a>
+                    </section>
+               
+            </td>
+            <td>@item.Id</td>
+        </tr>
+    }
+</table>
+

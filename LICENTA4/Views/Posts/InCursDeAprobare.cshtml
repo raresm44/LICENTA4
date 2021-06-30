@@ -1,0 +1,35 @@
+﻿@using LICENTA4.Models
+@using Microsoft.AspNet.Identity
+@model IEnumerable<LICENTA4.Models.Post>
+@{
+    ViewBag.Title = "InCursDeAprobare";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>InCursDeAprobare</h2>
+
+<table id="posts" class="table">
+    <thead>
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+<tbody>
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.ActionLink(item.Title, "Details", "Posts", new {id = item.Id}, null)
+        </td>
+        <td>
+            <a href="@Url.Action("Aproba", "Posts", new {id = item.Id})" class="button btn btn-link"> Aproba</a>
+        </td>
+    </tr>
+}
+</tbody>
+
+</table>

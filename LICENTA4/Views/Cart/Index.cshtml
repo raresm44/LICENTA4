@@ -1,0 +1,76 @@
+﻿@using System.Xml.Schema
+@using LICENTA4.Models;
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+<br />
+<table class="table">
+
+
+    @{
+        List<Item> cart1 = (List<Item>)Session["cart"];
+        if (cart1 != null)
+        {
+            <thead>
+                <tr>
+                    <th>Option</th>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Photo</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Sub Total</th>
+                </tr>
+                @{
+                    int Total = 0;
+                }
+            </thead>
+            foreach (Item item in (List<Item>)Session["cart"])
+            {
+                int lineTolal = Convert.ToInt32(item.Quantity * item.post.Price);
+                Total = Convert.ToInt32(@Total + lineTolal);
+
+                Session["SesTotal"] = Total;
+                <tr>
+                    <td><a href="@Url.Action("Remove", "Cart", new {id = item.post.Id})">Remove</a></td>
+                    <td>@item.post.Id</td>
+                    <td>@item.post.Title</td>
+                    @* <td><img src="~/Content/Images/@item.Product.Photo" width="60" /> </td> *@
+                    <td>@item.post.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.post.Price * item.Quantity)</td>
+                </tr>
+
+                {
+
+                }
+            }
+
+
+        }
+        else
+        {
+            <p>Inca nu a fost adaugat nici-un produs in cos</p>
+        }
+    }
+    @* <tr> *@
+    @*     <td align="right" colspan="6">Sum</td> *@
+    @*     <td> *@
+    @*         @{ *@
+    @*             List<Item> cart = (List<Item>)Session["cart"]; *@
+    @*             var total = cart.Sum(item => item.post.Price * item.Quantity); *@
+    @*         } *@
+    @*         @total *@
+    @*     </td> *@
+    @* </tr> *@
+</table>
+<br>
+<a href="@Url.Action("Index", "Posts")">Continue Shopping</a>
+<a href="@Url.Action("PaymentWithPayPal", "Payment")">Proceed payment</a>
+<button id="paypal-payment-button"> PayPal</button>
+
+
+<script src="https://www.paypal.com/sdk/js?client-id=AeRcxkEA2PNzlYcSDo0X7rIE8l5IjhbpTD-uV2iOSbee9JADZa33jndLrG1gxEwc1e55xIg5Y8nqvRhY"></script>
+<script>paypal.Buttons().render('paypal-payment-button');</script>

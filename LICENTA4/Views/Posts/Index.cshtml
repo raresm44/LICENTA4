@@ -1,0 +1,118 @@
+﻿@using LICENTA4.Models
+@using Microsoft.AspNet.Identity
+@model IEnumerable<LICENTA4.Models.Post>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="posts" class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Genre.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Platform.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAdded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateRelease)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+
+
+        </tr>
+    </thead>
+    
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Platform.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAdded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateRelease)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            @* <td> *@
+            @* @Html.DisplayFor(modelItem => item.UserId) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.Image) *@
+            @* </td> *@
+            @* <td> *@
+            @*     <img src="@Url.Content(item.Image)" alt="Image" width="100" height="100"/> *@
+            @* </td> *@
+            @* <img src= "@Url.Content(Model.ImagePath)" alt="Image" /> *@
+        <td>
+
+
+            @if (User.Identity.GetUserId() == item.UserId || User.IsInRole(RoleName.Admin))
+            {
+                <div>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                </div>
+            }
+            @if (User.Identity.GetUserId() != item.UserId && !User.IsInRole(RoleName.Admin))
+            {
+                <a href="@Url.Action("Buy", "Cart", new {id = item.Id})" class="button btn btn-link"> Buy Now</a>
+            }
+
+            @Html.ActionLink("Details", "Details", new { id = item.Id })
+
+        </td>
+        </tr>
+            
+
+    }
+    </tbody>
+</table>
+
+@section Scripts {
+    
+
+    <script>
+        $(document).ready(function () {
+    
+            $("#posts").DataTable();
+    
+        });
+    </script>
+}
